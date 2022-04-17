@@ -16,6 +16,9 @@
 #include <CommonCrypto/CommonHMAC.h>
 #include <sys/sysctl.h>
 
+#import <OpenGLES/gltypes.h>
+#import <OpenGLES/ES2/gl.h>
+
 #define kMiterLimit 10
 
 void HSVtoRGB(float h, float s, float v, float *r, float *g, float *b)
@@ -502,6 +505,9 @@ CGAffineTransform WDTransformForOrientation(UIInterfaceOrientation orientation)
         case UIInterfaceOrientationLandscapeRight:
             transform = CGAffineTransformRotate(transform, M_PI / 2);
             break;
+        default: {
+            break;
+        }
     }
     
     return transform;

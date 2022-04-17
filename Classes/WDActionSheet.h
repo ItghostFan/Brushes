@@ -13,9 +13,9 @@
 
 @protocol WDActionSheetDelegate;
 
-@interface WDActionSheet : NSObject <UIActionSheetDelegate>
+@interface WDActionSheet : NSObject
 
-@property (nonatomic) UIActionSheet *sheet;
+@property (nonatomic) UIAlertController *sheet;
 @property (nonatomic) NSMutableArray *actions;
 @property (nonatomic) NSMutableArray *tags;
 @property (nonatomic, weak) id<WDActionSheetDelegate> delegate;

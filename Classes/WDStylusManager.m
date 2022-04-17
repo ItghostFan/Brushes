@@ -13,6 +13,8 @@
 #import "WDUtilities.h"
 #import "UIDeviceHardware.h"
 
+#import "WDAppDelegate.h"
+
 NSString *WDStylusPrimaryButtonPressedNotification = @"WDStylusPrimaryButtonPressedNotification";
 NSString *WDStylusSecondaryButtonPressedNotification = @"WDStylusSecondaryButtonPressedNotification";
 
@@ -68,7 +70,7 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
     
     centralBlueToothManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     
-    self.mode = [[NSUserDefaults standardUserDefaults] integerForKey:@"WDStylusMode"];
+    self.mode = (WDStylusType)[[NSUserDefaults standardUserDefaults] integerForKey:@"WDStylusMode"];
     
     return self;
 }
@@ -225,19 +227,19 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
 {
     newlyDiscoveredPen = pen;
     NSString *format = NSLocalizedString(@"Would you like to start using %@?", @"Would you like to start using %@?");
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New Pen Found", @"New Pen Found")
-                                                        message:[NSString stringWithFormat:format, name]
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                              otherButtonTitles:NSLocalizedString(@"OK", @"OK"), nil];
-    [alertView show];
-}
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-	if (buttonIndex == 1) {
-		[pogoManager connectPogoPen:newlyDiscoveredPen];
-	}
+    
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"New Pen Found", @"New Pen Found")
+                                                                        message:[NSString stringWithFormat:format, name]
+                                                                 preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"No", @"No") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [pogoManager connectPogoPen:newlyDiscoveredPen];
+    }];
+    [controller addAction:cancelAction];
+    [controller addAction:okAction];
+    [((WDAppDelegate *)UIApplication.sharedApplication.delegate).navigationController.topViewController presentViewController:controller animated:YES completion:^{
+    }];
 }
 
 #pragma mark -- General BlueTooth state
@@ -265,7 +267,7 @@ NSString *WDBlueToothStateChangedNotification = @"WDBlueToothStateChangedNotific
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
 {
-    if (central.state == CBCentralManagerStatePoweredOn) {
+    if (central.state == CBManagerStatePoweredOn) {
         // only support this on iPads
         self.blueToothState = WDDeviceIsPhone() ? WDBlueToothOff : WDBlueToothLowEnergy;
     } else {

@@ -26,15 +26,15 @@
 @class WDDocument;
 @class WDMenu;
 
-@interface WDBrowserController : UIViewController <UIScrollViewDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, WDGridViewDataSource,
-                                                    DBRestClientDelegate, MFMailComposeViewControllerDelegate, WDImportControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate>
+@interface WDBrowserController : UIViewController <UIScrollViewDelegate, WDGridViewDataSource, UIPopoverPresentationControllerDelegate,
+                                                    DBRestClientDelegate, MFMailComposeViewControllerDelegate, WDImportControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
-    UIActionSheet           *deleteSheet_;
+    UIAlertController       *_deleteActionSheetController;
     
     NSMutableArray          *toolbarItems_;
     NSMutableArray          *editingToolbarItems_;
     
-    UIPopoverController     *popoverController_;
+    UIPopoverPresentationController *popoverController_;
     UIBarButtonItem         *selectItem_;
     UIBarButtonItem         *deleteItem_;
     UIBarButtonItem         *shareItem_;

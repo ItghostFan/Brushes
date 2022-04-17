@@ -16,7 +16,7 @@
 
 // Bluetooth power status
 // If state == CBCentralManagerStatePoweredOff, it may be polite to let your user know on first app launch, then perhaps later if it seems likely they will use a Pogo Connect soon.
-- (void)pogoManager:(T1PogoManager *)manager didUpdateBluetoothState:(CBCentralManagerState)state;
+- (void)pogoManager:(T1PogoManager *)manager didUpdateBluetoothState:(CBManagerState)state;
 
 
 // button events

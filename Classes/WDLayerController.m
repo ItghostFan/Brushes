@@ -549,7 +549,7 @@
         self.bottomBar.items = [self bottomBarItems];
     }
     
-    self.contentSizeForViewInPopover = self.view.frame.size;
+    self.preferredContentSize = self.view.frame.size;
 }
 
 - (WDBar *) topBar
@@ -636,7 +636,7 @@
         
     if ([self runningOnPhone]) {
         [self.navigationController setNavigationBarHidden:YES];
-        [self configureForOrientation:self.interfaceOrientation];
+        [self configureForOrientation:UIDevice.currentDevice.orientation];
     }
     
     if (WDDeviceIsPhone()) {
@@ -786,7 +786,8 @@
     [blendModeSheet addCancelButton];
     
     blendModeSheet.delegate = self;
-    [blendModeSheet.sheet showInView:self.view];
+//    [blendModeSheet.sheet showInView:self.view];
+    [self presentViewController:blendModeSheet.sheet animated:YES completion:nil];
 }
 
 - (void) actionSheetDismissed:(WDActionSheet *)actionSheet

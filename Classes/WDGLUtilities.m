@@ -11,6 +11,8 @@
 
 #import "WDGLUtilities.h"
 
+#import <OpenGLES/ES2/gl.h>
+
 void WDGLBuildQuadForRect(CGRect rect, CGAffineTransform transform, GLuint *quadVAO, GLuint *quadVBO)
 {
     CGPoint corners[4];

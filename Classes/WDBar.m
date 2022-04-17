@@ -127,8 +127,9 @@ const float         kWDBarItemShadowOpacity = 0.9f;
     UIImage *result = nil;
     
     if (WDUseModernAppearance()) {
-        UIFont  *font = [UIFont systemFontOfSize:17];
-        CGSize  textSize = [string sizeWithFont:font];
+//        UIFont  *font = [UIFont systemFontOfSize:17];
+        CGRect titleFrame = [string boundingRectWithSize:CGSizeZero options:NSStringDrawingUsesLineFragmentOrigin attributes:nil context:nil];
+        CGSize  textSize = titleFrame.size;
         CGSize  size = textSize;
         float   arrowSize = 9, arrowInset = 4;
 
@@ -142,7 +143,9 @@ const float         kWDBarItemShadowOpacity = 0.9f;
         CGPoint origin;
         origin.x = (size.width - textSize.width); // align right
         origin.y = (size.height - textSize.height) / 2.0f; // center vertically
-        [string drawAtPoint:origin withFont:font];
+        ;
+        [string drawInRect:CGRectMake(origin.x, origin.y, 0, 0) withAttributes:nil];
+//        [string drawAtPoint:origin withFont:font];
         
         // draw back arrow
         CGContextMoveToPoint(ctx, arrowInset + arrowSize, size.height / 2 - arrowSize);
@@ -156,8 +159,9 @@ const float         kWDBarItemShadowOpacity = 0.9f;
         result = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
     } else {
-        UIFont *font = [UIFont boldSystemFontOfSize:(landscape ? 12 : 13)];
-        CGSize textSize = [string sizeWithFont:font];
+//        UIFont *font = [UIFont boldSystemFontOfSize:(landscape ? 12 : 13)];
+        CGRect titleFrame = [string boundingRectWithSize:CGSizeZero options:NSStringDrawingUsesLineFragmentOrigin attributes:nil context:nil];
+        CGSize textSize = titleFrame.size;
         CGSize size = textSize;
         
         UIImage *backImage = landscape ? [UIImage imageNamed:@"backButtonLandscape.png"] : [UIImage imageNamed:@"backButton.png"];
@@ -176,7 +180,8 @@ const float         kWDBarItemShadowOpacity = 0.9f;
         CGPoint origin;
         origin.x = (size.width - textSize.width) / 2.0f + 2.0f;
         origin.y = (size.height - textSize.height) / 2.0f;
-        [string drawAtPoint:origin withFont:font];
+        [string drawInRect:CGRectMake(origin.x, origin.y, 0, 0) withAttributes:nil];
+//        [string drawAtPoint:origin withFont:font];
         
         result = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
@@ -500,8 +505,8 @@ const float         kWDBarItemShadowOpacity = 0.9f;
         label.backgroundColor = nil;
         label.opaque = NO;
         label.textColor = [UIColor whiteColor];
-        label.textAlignment = UITextAlignmentCenter;
-        label.lineBreakMode = UILineBreakModeMiddleTruncation;
+        label.textAlignment = NSTextAlignmentCenter;
+        label.lineBreakMode = NSLineBreakByTruncatingMiddle;
         label.font = [self portraitFont];
         label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         

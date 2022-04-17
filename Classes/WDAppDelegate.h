@@ -14,7 +14,7 @@
 
 @class WDBrowserController;
 
-@interface WDAppDelegate : NSObject <UIApplicationDelegate, DBSessionDelegate, UIAlertViewDelegate> {
+@interface WDAppDelegate : NSObject <UIApplicationDelegate, DBSessionDelegate> {
 }
 
 @property (nonatomic) IBOutlet UIWindow *window;

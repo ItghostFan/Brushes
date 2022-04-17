@@ -11,6 +11,8 @@
 
 #import "WDActionSheet.h"
 
+#import "WDAppDelegate.h"
+
 @interface WDTagProvider : NSObject
 @property (nonatomic, assign) int tag;
 + (WDTagProvider *) tagProviderWithNumber:(NSNumber *)number;
@@ -49,49 +51,47 @@
         return nil;
     }
     
-    sheet = [[UIActionSheet alloc] init];
-    sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+//    sheet = [[UIActionSheet alloc] init];
+//    sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
     actions = [[NSMutableArray alloc] init];
     tags = [[NSMutableArray alloc] init];
     
-    self.sheet.delegate = self;
+    self.sheet = [UIAlertController alertControllerWithTitle:nil
+                                                    message:nil
+                                             preferredStyle:UIAlertControllerStyleActionSheet];
+    [((WDAppDelegate *)UIApplication.sharedApplication.delegate).navigationController.topViewController presentViewController:self.sheet animated:YES completion:^{
+    }];
     
     return self;
 }
 
-// Called when a button is clicked. The view will be automatically dismissed after this call returns
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != actionSheet.cancelButtonIndex) {
-        void (^action)(id) = (self.actions)[buttonIndex];
-        
-        WDTagProvider *sender = [WDTagProvider tagProviderWithNumber:(self.tags)[buttonIndex]];
-        action(sender);
-    }
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    [delegate actionSheetDismissed:self];
-}
+// TODO: 增加这个。
+//    [delegate actionSheetDismissed:self];
 
 - (void) addButtonWithTitle:(NSString *)title action:(void (^)(id))action
 {
-    [sheet addButtonWithTitle:title];
-    [self.actions addObject:[action copy]];
-    [self.tags addObject:@0];
+    [self addButtonWithTitle:title action:action tag:0];
 }
 
 - (void) addButtonWithTitle:(NSString *)title action:(void (^)(id))action tag:(int)tag
 {
-    [sheet addButtonWithTitle:title];
+    NSInteger index = self.actions.count;
+    [self.sheet addAction:[UIAlertAction actionWithTitle:title
+                                                   style:UIAlertActionStyleDefault
+                                                 handler:^(UIAlertAction * _Nonnull action) {
+        void (^block)(id) = self.actions[index];
+        block([WDTagProvider tagProviderWithNumber:(self.tags)[index]]);
+    }]];
     [self.actions addObject:[action copy]];
     [self.tags addObject:@(tag)];
 }
 
 - (void) addCancelButton
 {
-    sheet.cancelButtonIndex = [sheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel")];
+    [self.sheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                   style:UIAlertActionStyleCancel
+                                                 handler:^(UIAlertAction * _Nonnull action) {
+    }]];;
 }
 
 @end

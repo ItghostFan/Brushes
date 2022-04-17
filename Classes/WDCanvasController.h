@@ -42,7 +42,7 @@ typedef enum {
 @class WDUnlockView;
 
 @interface WDCanvasController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate,
-                                                    MFMailComposeViewControllerDelegate, UIPopoverControllerDelegate,
+                                                    MFMailComposeViewControllerDelegate,
                                                         WDActionSheetDelegate, WDDocumentReplayDelegate, WDActionNameViewDelegate>
 {
     WDBarItem           *album_;
@@ -57,7 +57,7 @@ typedef enum {
     WDMenu              *actionMenu_;
     WDMenu              *visibleMenu_; // pointer to currently active menu
     
-    UIPopoverController *popoverController_;
+    UIPopoverPresentationController *popoverController_;
     
     WDLayerController   *layerController_;
     WDLobbyController   *lobbyController_;
@@ -104,7 +104,7 @@ typedef enum {
 
 - (BOOL) shouldDismissPopoverForClassController:(Class)controllerClass insideNavController:(BOOL)insideNav;
 - (void) showController:(UIViewController *)controller fromBarButtonItem:(UIBarButtonItem *)barButton animated:(BOOL)animated;
-- (UIPopoverController *) runPopoverWithController:(UIViewController *)controller from:(id)sender;
+- (UIPopoverPresentationController *) runPopoverWithController:(UIViewController *)controller from:(id)sender;
 
 - (void) validateMenuItem:(WDMenuItem *)item;
 - (void) validateVisibleMenuItems;

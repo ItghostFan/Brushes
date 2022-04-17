@@ -127,7 +127,7 @@ typedef NS_ENUM(NSInteger, T1PogoManagerDataOperationError) {
  You may also obtain just the view controller for pushing onto your own nav stack.
  If you'd like to make your own pen connection interface, see the Peripheral-based API below
  */
-- (UIPopoverController *)scanningPopover;
+//- (UIPopoverController *)scanningPopover;
 - (UITableViewController *)scanningViewController;
 - (UINavigationController *)scanningViewControllerForPhone;
 

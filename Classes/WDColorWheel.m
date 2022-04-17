@@ -44,6 +44,7 @@
 
 - (void) awakeFromNib
 {
+    [super awakeFromNib];
     CGRect frame = [self frame];
     
     // compute radius

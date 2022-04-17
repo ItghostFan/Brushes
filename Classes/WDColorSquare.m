@@ -17,6 +17,7 @@
 #import "WDUtilities.h"
 #import "UIView+Additions.h"
 #import "gl_matrix.h"
+#import <OpenGLES/ES2/gl.h>
 
 @implementation WDColorSquare
 

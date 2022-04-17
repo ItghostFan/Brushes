@@ -117,7 +117,7 @@ static NSString * const WDDropboxSubdirectoryMissingNotification = @"WDDropboxSu
     
     self.toolbarItems = [self toolbarItems];
 	
-    self.contentSizeForViewInPopover = CGSizeMake(320, 480);
+    self.preferredContentSize = CGSizeMake(320, 480);
     
     return self;
 }
@@ -417,7 +417,7 @@ static NSString * const WDDropboxSubdirectoryMissingNotification = @"WDDropboxSu
                                                                                        action:NULL];
     
     UIBarButtonItem *unlinkButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlink Dropbox", @"Unlink Dropbox")
-                                                                         style:UIBarButtonItemStyleBordered target:self
+                                                                         style:UIBarButtonItemStylePlain target:self
                                                                         action:@selector(unlinkDropbox:)];
     
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {

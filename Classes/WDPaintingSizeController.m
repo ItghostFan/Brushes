@@ -165,7 +165,8 @@ const NSUInteger WDMaximumDimension = 2048;
 
 - (void) cancel:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+//    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void) create:(id)sender
@@ -173,7 +174,8 @@ const NSUInteger WDMaximumDimension = 2048;
     [self commitEdits];
     
     [self.browserController createNewPainting:CGSizeMake(width, height)];
-    [self dismissModalViewControllerAnimated:YES];
+//    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (NSArray *) defaultToolbarItems
@@ -254,7 +256,7 @@ const NSUInteger WDMaximumDimension = 2048;
     int     ix = 0;
     BOOL    buildMiniCanvases = self.miniCanvases.count == 0 ? YES : NO;
     
-    for (NSDictionary *dict in self.configuration) {
+    for (NSDictionary *dict OS_UNUSED in self.configuration) {
         size = [self sizeForPage:ix];
         
         float percentage = [self canvasScalePercentage];
@@ -394,7 +396,7 @@ const NSUInteger WDMaximumDimension = 2048;
     self.navigationController.toolbarHidden = NO;
     
     UIBarButtonItem *create = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Create", @"Create")
-                                                               style:UIBarButtonItemStyleBordered
+                                                               style:UIBarButtonItemStylePlain
                                                               target:self
                                                               action:@selector(create:)];
     self.navigationItem.rightBarButtonItem = create;
@@ -440,7 +442,7 @@ const NSUInteger WDMaximumDimension = 2048;
     scrollView.delegate = self;
     scrollView.opaque =  YES;
     
-    self.contentSizeForViewInPopover = self.view.frame.size;
+    self.preferredContentSize = self.view.frame.size;
 }
 
 - (void) viewWillAppear:(BOOL)animated

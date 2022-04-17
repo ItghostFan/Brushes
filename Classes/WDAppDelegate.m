@@ -100,12 +100,12 @@ void uncaughtExceptionHandler(NSException *exception) {
     NSString *name = [[WDPaintingManager sharedInstance] installPaintingFromURL:url error:&error];
 
     if (!name) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Broken Painting", @"Broken Painting")
-                                                            message:NSLocalizedString(@"Brushes could not open the requested painting.", @"Brushes could not open the requested painting.")
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-        [alertView show];
+        UIAlertController *controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Broken Painting", @"Broken Painting") message:NSLocalizedString(@"Brushes could not open the requested painting.", @"Brushes could not open the requested painting.") preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        [controller addAction:okAction];
+        [self.navigationController.topViewController presentViewController:controller animated:YES completion:^{
+        }];
     } else if (navigationController.topViewController == browserController) {
         [browserController dismissViewControllerAnimated:NO completion:nil];
         [self performSelector:@selector(startEditingDocument:) withObject:name afterDelay:0];
@@ -132,19 +132,6 @@ void uncaughtExceptionHandler(NSException *exception) {
 #pragma mark -
 #pragma mark Dropbox unlinking
 
-- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == alertView.cancelButtonIndex) {
-        return;
-    }
-    
-    if ([[DBSession sharedSession] isLinked]) {
-        [[DBSession sharedSession] unlinkAll];
-    } 
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:WDDropboxWasUnlinkedNotification object:self];
-}
-
 - (void) unlinkDropbox
 {
     if (![[DBSession sharedSession] isLinked]) {
@@ -157,14 +144,19 @@ void uncaughtExceptionHandler(NSException *exception) {
     NSString *unlinkButtonTitle = NSLocalizedString(@"Unlink", @"Title of Unlink button");
     NSString *cancelButtonTitle = NSLocalizedString(@"Cancel", @"Title of Cancel button");
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                        message:message
-                                                       delegate:self
-                                              cancelButtonTitle:nil
-                                              otherButtonTitles:unlinkButtonTitle, cancelButtonTitle, nil];
-    alertView.cancelButtonIndex = 1;
-    
-    [alertView show];
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *unlinkAction = [UIAlertAction actionWithTitle:unlinkButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if ([[DBSession sharedSession] isLinked]) {
+            [[DBSession sharedSession] unlinkAll];
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:WDDropboxWasUnlinkedNotification object:self];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtonTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [controller addAction:unlinkAction];
+    [controller addAction:cancelAction];
+    [self.navigationController.topViewController presentViewController:controller animated:YES completion:^{
+    }];
 }
 
 @end

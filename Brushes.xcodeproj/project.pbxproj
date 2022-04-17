@@ -220,7 +220,6 @@
 		6B5F0F6916005FBF00E44FB8 /* BlueToothLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5F0F6816005FBF00E44FB8 /* BlueToothLandscape@2x.png */; };
 		6B616774137B429200BEC0BA /* Samples in Resources */ = {isa = PBXBuildFile; fileRef = 6B616773137B429200BEC0BA /* Samples */; };
 		6B624044155CE1B2003EB9B3 /* WDPaintingSizeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B624043155CE1B2003EB9B3 /* WDPaintingSizeController.m */; };
-		6B6240511561B941003EB9B3 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B6240501561B941003EB9B3 /* DropboxSDK.framework */; };
 		6B648826154B4EBD0066C950 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B648824154B4EBD0066C950 /* play.png */; };
 		6B648827154B4EBD0066C950 /* play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B648825154B4EBD0066C950 /* play@2x.png */; };
 		6B64884E155A02810066C950 /* WDExportController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B64884D155A02810066C950 /* WDExportController.m */; };
@@ -405,6 +404,8 @@
 		6BF9986815A67C7100AFBB3A /* merge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BF9986615A67C7000AFBB3A /* merge@2x.png */; };
 		6BF9986F15A776EC00AFBB3A /* WDCellSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BF9986E15A776EC00AFBB3A /* WDCellSelectionView.m */; };
 		6BFA802C1249CEDB00D1749C /* WDLayerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BFA802B1249CEDB00D1749C /* WDLayerCell.m */; };
+		7869E5C8280C06E300E18487 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B6240501561B941003EB9B3 /* DropboxSDK.framework */; };
+		7869E5C9280C06E300E18487 /* DropboxSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6B6240501561B941003EB9B3 /* DropboxSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C01FCF5008A9545400542486 /* WDSynchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542485 /* WDSynchronizer.m */; };
 		C01FCF5008A954540054248D /* WDAddLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054248C /* WDAddLayer.m */; };
 		C01FCF5008A9545400542490 /* WDDeleteLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A954540054248F /* WDDeleteLayer.m */; };
@@ -412,6 +413,20 @@
 		C01FCF5008A9545400542499 /* WDDocumentChange.m in Sources */ = {isa = PBXBuildFile; fileRef = C01FCF5008A9545400542498 /* WDDocumentChange.m */; };
 		C01FCF5008A95454005424A5 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C01FCF5008A95454005424A4 /* Accelerate.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7869E5CA280C06E300E18487 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				7869E5C9280C06E300E18487 /* DropboxSDK.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1D3623240D0F684500981E51 /* WDAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WDAppDelegate.h; sourceTree = "<group>"; };
@@ -1006,10 +1021,10 @@
 				6BEB5AF0147DA84D00686784 /* Twitter.framework in Frameworks */,
 				C01FCF5008A95454005424A5 /* Accelerate.framework in Frameworks */,
 				6B8C1C3D15375EAF00539F73 /* CoreVideo.framework in Frameworks */,
-				6B6240511561B941003EB9B3 /* DropboxSDK.framework in Frameworks */,
 				6BDB83CA1593CDC10037E10B /* libT1PogoManager.a in Frameworks */,
 				6BDB83CE1593D2710037E10B /* AVFoundation.framework in Frameworks */,
 				6BDB83D01593D2920037E10B /* CoreBluetooth.framework in Frameworks */,
+				7869E5C8280C06E300E18487 /* DropboxSDK.framework in Frameworks */,
 				6B29083616013C2400593812 /* Social.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1873,6 +1888,7 @@
 				6B1E108B15EFF14E006128D8 /* ShellScript */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+				7869E5CA280C06E300E18487 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1893,7 +1909,7 @@
 				ORGANIZATIONNAME = "Taptrix, Inc.";
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
-						DevelopmentTeam = CQ46W8F62S;
+						DevelopmentTeam = 4C39GTGS9D;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
 								enabled = 0;
@@ -2376,14 +2392,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 4C39GTGS9D;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
 					/Users/sprang/Development/Brushes,
+					"$(PROJECT_DIR)",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2392,11 +2412,13 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "$(SRCROOT)/Brushes-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/T1PogoManager\"",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.itghost.test;
 				PRODUCT_NAME = Brushes;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -2410,25 +2432,31 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = 4C39GTGS9D;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
 					/Users/sprang/Development/Brushes,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Brushes_Prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "$(SRCROOT)/Brushes-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/T1PogoManager\"",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.itghost.test;
 				PRODUCT_NAME = Brushes;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -2463,25 +2491,31 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = 4C39GTGS9D;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
 					/Users/sprang/Development/Brushes,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Brushes_Prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "$(SRCROOT)/Brushes-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/T1PogoManager\"",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.itghost.test;
 				PRODUCT_NAME = Brushes;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -2519,15 +2553,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = Brushes.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
 					/Users/sprang/Development/Brushes,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Brushes_Prefix.pch;
@@ -2535,7 +2572,8 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "$(SRCROOT)/Brushes-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/T1PogoManager\"",

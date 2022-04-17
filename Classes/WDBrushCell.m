@@ -24,6 +24,7 @@
 
 - (void) awakeFromNib
 {
+    [super awakeFromNib];
     WDCellSelectionView *selectionView = [[WDCellSelectionView alloc] init];
     self.selectedBackgroundView = selectionView;
 }

@@ -234,7 +234,8 @@ const float kButtonOutset = 10.0f;
     float width, totalWidth = 0.0f;
     
     for (NSString *title in self.titles) {
-        width = [title sizeWithFont:self.font].width;
+        CGRect titleFrame = [title boundingRectWithSize:CGSizeZero options:NSStringDrawingUsesLineFragmentOrigin attributes:nil context:nil];
+        width = CGRectGetWidth(titleFrame);
         totalWidth += width + (kButtonOutset * 2);
     }
     
@@ -249,7 +250,8 @@ const float kButtonOutset = 10.0f;
     
     for (NSString *title in self.titles) {
         button = [UIButton buttonWithType:UIButtonTypeCustom];
-        buttonFrame.size.width = [title sizeWithFont:self.font].width + (kButtonOutset * 2);
+        CGRect titleFrame = [title boundingRectWithSize:CGSizeZero options:NSStringDrawingUsesLineFragmentOrigin attributes:nil context:nil];
+        buttonFrame.size.width = CGRectGetWidth(titleFrame) + (kButtonOutset * 2);
         button.frame = buttonFrame;
         button.titleLabel.font = self.font;
         button.tag = index++;

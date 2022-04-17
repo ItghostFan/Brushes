@@ -226,7 +226,7 @@
 
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
         [self.navigationController setNavigationBarHidden:YES];
-        [self configureForOrientation:self.interfaceOrientation];
+        [self configureForOrientation:UIDevice.currentDevice.orientation];
     }
     
     [self selectActiveBrush];
@@ -359,7 +359,7 @@
     [doubleTap addTarget:self action:@selector(done:)];
     [brushTable addGestureRecognizer:doubleTap];
     
-    self.contentSizeForViewInPopover = self.view.frame.size;
+    self.preferredContentSize = self.view.frame.size;
 
     self.navigationItem.leftBarButtonItem.enabled = [[WDActiveState sharedInstance] canDeleteBrush];
     

@@ -73,20 +73,19 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
     
     
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Select", @"Select")
-                                                                 style:UIBarButtonItemStyleBordered
+                                                                 style:UIBarButtonItemStylePlain
                                                                 target:self
                                                                 action:@selector(startEditing:)];
     self.navigationItem.leftBarButtonItem = leftItem;
 }
 
-- (UIPopoverController *) runPopoverWithController:(UIViewController *)controller from:(id)sender
+- (UIPopoverPresentationController *) runPopoverWithController:(UIViewController *)controller from:(id)sender
 {
     [self hidePopovers];
     
-    popoverController_ = [[UIPopoverController alloc] initWithContentViewController:controller];
+    popoverController_ = [[UIPopoverPresentationController alloc] initWithPresentedViewController:((WDAppDelegate *)UIApplication.sharedApplication.delegate).navigationController.topViewController presentingViewController:controller];
 	popoverController_.delegate = self;
     popoverController_.passthroughViews = @[self.navigationController.navigationBar];
-    [popoverController_ presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
     return popoverController_;
 }
@@ -94,7 +93,8 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
 - (void) hidePopovers
 {
     if (popoverController_) {
-        [popoverController_ dismissPopoverAnimated:NO];
+//        [popoverController_ dismissPopoverAnimated:NO];
+        [popoverController_.presentingViewController dismissViewControllerAnimated:YES completion:nil];
         popoverController_ = nil;
     }
 }
@@ -111,7 +111,7 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
     
     WDEmail *email = [[WDEmail alloc] init];
     email.completeAttachments = 0;
-    email.expectedAttachments = [selectedPaintings_ count];
+    email.expectedAttachments = (int)[selectedPaintings_ count];
     email.picker = picker;
     
     WDPaintingIterator *iterator = [[WDPaintingIterator alloc] init];
@@ -329,13 +329,16 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
 {
     NSString *title = NSLocalizedString(@"Could Not Open Painting", @"Could Not Open Painting");
     NSString *format = NSLocalizedString(@"There was a problem opening “%@”.", @"There was a problem opening “%@”.");
-                              
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                        message:[NSString stringWithFormat:format, document.displayName]
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                              otherButtonTitles:nil];
-    [alertView show];
+    
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:title
+                                                                        message:[NSString stringWithFormat:format, document.displayName]
+                                                                 preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.navigationController popToViewController:self animated:YES];
+    }];
+    [controller addAction:okAction];
+    [self presentViewController:controller animated:YES completion:^{
+    }];
 }
 
 - (void) openDocument:(WDDocument *)document editing:(BOOL)editing
@@ -354,11 +357,6 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
             }
         });
     }];
-}
-
-- (void) alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    [self.navigationController popToViewController:self animated:YES];
 }
 
 - (void) updateTitle
@@ -629,33 +627,25 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
     
     NSString *deleteButtonTitle = NSLocalizedString(@"Delete", @"Title of Delete button");
     NSString *cancelButtonTitle = NSLocalizedString(@"Cancel", @"Title of Cancel button");
-
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                        message:message
-                                                       delegate:self
-                                              cancelButtonTitle:nil
-                                              otherButtonTitles:deleteButtonTitle, cancelButtonTitle, nil];
-    alertView.cancelButtonIndex = 1;
     
-    [alertView show];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == alertView.cancelButtonIndex) {
-        return;
-    }
-    
-    [[WDPaintingManager sharedInstance] deletePaintings:selectedPaintings_];
-    
-    [self updateTitle];
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:deleteButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[WDPaintingManager sharedInstance] deletePaintings:selectedPaintings_];
+        [self updateTitle];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtonTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [controller addAction:deleteAction];
+    [controller addAction:cancelAction];
+    [self presentViewController:controller animated:YES completion:^{
+    }];
 }
 
 #pragma mark - Delete Action Sheet
 
 - (void) showDeleteMenu:(id)sender
 {
-    if (deleteSheet_) {
+    if (_deleteActionSheetController) {
         [self dismissPopoverAnimated:YES];
         return;
     }
@@ -665,29 +655,25 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
     NSString *format = NSLocalizedString(@"Delete %d Paintings", @"Delete %d Paintings");
     NSString *action = (selectedPaintings_.count) == 1 ? NSLocalizedString(@"Delete Painting", @"Delete Painting") :
                             [NSString stringWithFormat:format, selectedPaintings_.count];
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:nil
+                                                                        message:nil
+                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
     if (self.runningOnPhone) {
-        deleteSheet_ = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-        deleteSheet_.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-        
-        deleteSheet_.destructiveButtonIndex = [deleteSheet_ addButtonWithTitle:action];
-        deleteSheet_.cancelButtonIndex = [deleteSheet_ addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel")];
-    } else {
-        deleteSheet_ = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@""
-                                     destructiveButtonTitle:action otherButtonTitles:nil];
-    }
-    
-    [deleteSheet_ showFromBarButtonItem:sender animated:YES];
-}
-     
- - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (actionSheet == deleteSheet_) {
-        if (buttonIndex == actionSheet.destructiveButtonIndex) {
+        UIAlertAction *actionAction = [UIAlertAction actionWithTitle:action style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             [self deleteSelectedPaintings];
-        }
+            _deleteActionSheetController = nil;
+        }];
+        [controller addAction:actionAction];
+        [controller addAction:cancelAction];
+    } else {
+        [controller addAction:cancelAction];
     }
     
-    deleteSheet_ = nil;
+    [self presentViewController:controller animated:YES completion:^{
+    }];
+    _deleteActionSheetController = controller;
 }
 
 - (void) setEditing:(BOOL)editing animated:(BOOL)animated
@@ -723,7 +709,7 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
     WDEmail *email = aNotification.object;
     if (++email.completeAttachments == email.expectedAttachments) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.navigationController presentModalViewController:email.picker animated:YES];
+            [self.navigationController presentViewController:email.picker animated:YES completion:nil];
         });
     }
 }
@@ -749,7 +735,7 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
 - (void) dismissPopoverAnimated:(BOOL)animated
 {    
     if (popoverController_) {
-        [popoverController_ dismissPopoverAnimated:animated];
+        [popoverController_.presentingViewController dismissViewControllerAnimated:YES completion:nil];
         popoverController_ = nil;
         self.currentPopoverViewController = nil;
     }
@@ -758,13 +744,14 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
         [self dismissViewControllerAnimated:animated completion:nil];
     }
     
-    if (deleteSheet_) {
-        [deleteSheet_ dismissWithClickedButtonIndex:deleteSheet_.cancelButtonIndex animated:NO];
-        deleteSheet_ = nil;
+    if (_deleteActionSheetController) {
+        [_deleteActionSheetController dismissViewControllerAnimated:YES completion:nil];
+//        [deleteActionSheetController dismissWithClickedButtonIndex:deleteActionSheetController.cancelButtonIndex animated:NO];
+        _deleteActionSheetController = nil;
     }
 }
 
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+- (void)popoverControllerDidDismissPopover:(UIPopoverPresentationController *)popoverController
 {
     if (popoverController == popoverController_) {
         self.currentPopoverViewController = nil;
@@ -795,19 +782,20 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
     if (self.runningOnPhone) {
         [self presentViewController:presentedController animated:YES completion:nil];
     } else {
-        popoverController_ = [[UIPopoverController alloc] initWithContentViewController:presentedController];
+        popoverController_ = [[UIPopoverPresentationController alloc] initWithPresentedViewController:((WDAppDelegate *)UIApplication.sharedApplication.delegate).navigationController.topViewController presentingViewController:controller];
         popoverController_.delegate = self;
         
         if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-            [popoverController_ presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
-                                       permittedArrowDirections:UIPopoverArrowDirectionAny
-                                                       animated:NO];
+//            [popoverController_ presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
+//                                       permittedArrowDirections:UIPopoverArrowDirectionAny
+//                                                       animated:NO];
+            [popoverController_.presentedViewController presentViewController:popoverController_.presentingViewController animated:YES completion:nil];
         } else {
-            UIView *view = (UIView *) sender;
-            [popoverController_ presentPopoverFromRect:view.bounds
-                                                inView:view
-                              permittedArrowDirections:UIPopoverArrowDirectionAny
-                                              animated:NO];
+            [popoverController_.presentedViewController presentViewController:popoverController_.presentingViewController animated:YES completion:nil];
+//            [popoverController_ presentPopoverFromRect:view.bounds
+//                                                inView:view
+//                              permittedArrowDirections:UIPopoverArrowDirectionAny
+//                                              animated:NO];
         }
         
         self.currentPopoverViewController = controller;
@@ -967,36 +955,45 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
 {
     NSString *format = NSLocalizedString(@"Brushes could not import “%@”. It may be corrupt or in a format that's not supported.",
                                          @"Brushes could not import “%@”. It may be corrupt or in a format that's not supported.");
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Import Problem", @"Import Problem")
-                                                        message:[NSString stringWithFormat:format, filename]
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                              otherButtonTitles:nil];
-    [alertView show];
+
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Import Problem", @"Import Problem")
+                                                                        message:[NSString stringWithFormat:format, filename]
+                                                                 preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [controller addAction:okAction];
+    [self presentViewController:controller animated:YES completion:^{
+    }];
 }
 
 - (void) showImportTooLargeMessage:(NSString *)filename
 {
     NSString *format = NSLocalizedString(@"Brushes could not import “%@”. The resolution is too high for this device.",
                                          @"Brushes could not import “%@”. The resolution is too high for this device.");
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Import Problem", @"Import Problem")
-                                                        message:[NSString stringWithFormat:format, filename]
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                              otherButtonTitles:nil];
-    [alertView show];
+    
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Import Problem", @"Import Problem")
+                                                                        message:[NSString stringWithFormat:format, filename]
+                                                                 preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [controller addAction:okAction];
+    [self presentViewController:controller animated:YES completion:^{
+    }];
 }
 
 - (void) showImportMemoryWarningMessage:(NSString *)filename
 {
     NSString *format = NSLocalizedString(@"Brushes could not import “%@”. There is not enough available memory.",
                                          @"Brushes could not import “%@”. There is not enough available memory.");
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Import Problem", @"Import Problem")
-                                                        message:[NSString stringWithFormat:format, filename]
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                              otherButtonTitles:nil];
-    [alertView show];
+    
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Import Problem", @"Import Problem")
+                                                                        message:[NSString stringWithFormat:format, filename]
+                                                                 preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [controller addAction:okAction];
+    [self presentViewController:controller animated:YES completion:^{
+    }];
 }
 
 - (void) restClient:(DBRestClient*)client uploadProgress:(CGFloat)progress forFile:(NSString*)destPath from:(NSString*)srcPath;
@@ -1051,12 +1048,15 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
 
     NSString *format = NSLocalizedString(@"There was a problem downloading “%@”. Check your network connection and try again.",
                                          @"There was a problem downloading“%@”. Check your network connection and try again.");
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Download Problem", @"Download Problem")
-                                                        message:[NSString stringWithFormat:format, [downloadPath lastPathComponent]]
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                              otherButtonTitles:nil];
-    [alertView show];
+    
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Download Problem", @"Download Problem")
+                                                                        message:[NSString stringWithFormat:format, [downloadPath lastPathComponent]]
+                                                                 preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [controller addAction:okAction];
+    [self presentViewController:controller animated:YES completion:^{
+    }];
 }
 
 - (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error
@@ -1067,12 +1067,15 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
     
     NSString *format = NSLocalizedString(@"There was a problem uploading “%@”. Check your network connection and try again.",
                                          @"There was a problem uploading“%@”. Check your network connection and try again.");
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Upload Problem", @"Upload Problem")
-                                                        message:[NSString stringWithFormat:format, [srcPath lastPathComponent]]
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                              otherButtonTitles:nil];
-    [alertView show];
+    
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Upload Problem", @"Upload Problem")
+                                                                        message:[NSString stringWithFormat:format, [srcPath lastPathComponent]]
+                                                                 preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [controller addAction:okAction];
+    [self presentViewController:controller animated:YES completion:^{
+    }];
 }
 
 - (void) stopEditing:(id)sender
@@ -1092,7 +1095,7 @@ static NSString *WDAttachmentNotification = @"WDAttachmentNotification";
 
 - (BOOL) ignoreOrientationChange:(UIInterfaceOrientation)inOrientation
 {
-    BOOL inPortrait = UIInterfaceOrientationIsPortrait(self.interfaceOrientation);
+    BOOL inPortrait = UIInterfaceOrientationIsPortrait(UIDevice.currentDevice.orientation);
     BOOL goingToPortrait = UIInterfaceOrientationIsPortrait(inOrientation);
     
     return (inPortrait == goingToPortrait) ? YES : NO;

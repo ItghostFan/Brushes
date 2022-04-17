@@ -16,6 +16,7 @@
 #import "WDThumbButton.h"
 #import "UIImage+Additions.h"
 #import "UIView+Additions.h"
+#import "WDAppDelegate.h"
 
 @interface WDThumbnailView (Private)
 - (void) reloadFilenameFields_;
@@ -151,8 +152,14 @@
     }
     
     if (errorMessage) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:errorMessage delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
+        UIAlertController *controller = [UIAlertController alertControllerWithTitle:nil
+                                                                            message:errorMessage
+                                                                     preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        [controller addAction:okAction];
+        [((WDAppDelegate *)UIApplication.sharedApplication.delegate).navigationController.topViewController presentViewController:controller animated:YES completion:^{
+        }];
         
         [self reloadFilenameFields_];
     }
@@ -189,7 +196,7 @@
         CGRect frame = CGRectMake(0, 0, self.bounds.size.width, self.titleFieldHeight);
         
         titleField_ = [[UITextField alloc] initWithFrame:frame];
-        titleField_.textAlignment = UITextAlignmentCenter;
+        titleField_.textAlignment = NSTextAlignmentCenter;
         titleField_.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         titleField_.delegate = self;
         titleField_.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:([self runningOnPhone] ? 16 : 20)];

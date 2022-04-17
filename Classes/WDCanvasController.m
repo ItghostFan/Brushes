@@ -80,7 +80,7 @@
         return nil;
     }
     
-    [self setWantsFullScreenLayout:YES];
+//    [self setWantsFullScreenLayout:YES];
     
     return self;
 }
@@ -181,15 +181,15 @@
         return NO;
     }
     
-    if (insideNav && [popoverController_.contentViewController isKindOfClass:[UINavigationController class]]) {
-        NSArray *viewControllers = [(UINavigationController *)popoverController_.contentViewController viewControllers];
+    if (insideNav && [popoverController_.presentingViewController isKindOfClass:[UINavigationController class]]) {
+        NSArray *viewControllers = [(UINavigationController *)popoverController_.presentingViewController viewControllers];
         
         for (UIViewController *viewController in viewControllers) {
             if ([viewController isKindOfClass:controllerClass]) {
                 return YES;
             }
         }
-    } else if ([popoverController_.contentViewController isKindOfClass:controllerClass]) {
+    } else if ([popoverController_.presentingViewController isKindOfClass:controllerClass]) {
         return YES;
     }
     
@@ -219,7 +219,7 @@
     if (self.runningOnPhone) {
         [[picker presentingViewController] dismissViewControllerAnimated:YES completion:nil];
     } else {
-        [popoverController_ dismissPopoverAnimated:YES];
+        [popoverController_.presentingViewController dismissViewControllerAnimated:YES completion:nil];
         popoverController_ = nil;
     }
 }
@@ -338,7 +338,8 @@
     [shareSheet addCancelButton];
     
     shareSheet.delegate = self;
-    [shareSheet.sheet showInView:self.view];
+//    [shareSheet.sheet showInView:self.view];
+    [self presentViewController:shareSheet.sheet animated:YES completion:nil];
 }
 
 - (void) showGearSheet:(id)sender
@@ -377,7 +378,7 @@
     [gearSheet addCancelButton];
     
     gearSheet.delegate = self;
-    [gearSheet.sheet showInView:self.view];
+    [self presentViewController:gearSheet.sheet animated:YES completion:nil];
 }
 
 #pragma mark -
@@ -385,7 +386,7 @@
 
 - (void) showActionMenu:(id)sender
 {
-    if (popoverController_ && (popoverController_.contentViewController.view == actionMenu_)) {
+    if (popoverController_ && (popoverController_.presentingViewController.view == actionMenu_)) {
         [self hidePopovers];
         return;
     }
@@ -436,7 +437,7 @@
     
     UIViewController *controller = [[UIViewController alloc] init];
     controller.view = actionMenu_;
-    controller.contentSizeForViewInPopover = actionMenu_.frame.size;
+    controller.preferredContentSize = actionMenu_.frame.size;
     
     visibleMenu_ = actionMenu_;
     [self validateVisibleMenuItems];
@@ -446,7 +447,7 @@
 
 - (void) showGearMenu:(id)sender
 {
-    if (popoverController_ && (popoverController_.contentViewController.view == gearMenu_)) {
+    if (popoverController_ && (popoverController_.presentingViewController.view == gearMenu_)) {
         [self hidePopovers];
         return;
     }
@@ -508,7 +509,7 @@
     
     UIViewController *controller = [[UIViewController alloc] init];
     controller.view = gearMenu_;
-    controller.contentSizeForViewInPopover = gearMenu_.frame.size;
+    controller.preferredContentSize = gearMenu_.frame.size;
     
     visibleMenu_ = gearMenu_;
     [self validateVisibleMenuItems];
@@ -524,18 +525,19 @@
     [facebookSheet setInitialText:NSLocalizedString(@"Check out my Brushes painting! http://brushesapp.com",
                                                     @"Check out my Brushes painting! http://brushesapp.com")];
     
-    [self presentModalViewController:facebookSheet animated:YES];
+//    [self presentModalViewController:facebookSheet animated:YES];
+    [self presentViewController:facebookSheet animated:YES completion:nil];
 }
 
 - (void) tweetPainting:(id)sender
 {
-    TWTweetComposeViewController *tweetSheet = [[TWTweetComposeViewController alloc] init];
-    
-    [tweetSheet addImage:[canvas_.painting imageForCurrentState]];
-    [tweetSheet setInitialText:NSLocalizedString(@"Check out my Brushes #painting! @brushesapp",
-                                                 @"Check out my Brushes #painting! @brushesapp")];
-    
-    [self presentModalViewController:tweetSheet animated:YES];
+//    TWTweetComposeViewController *tweetSheet = [[TWTweetComposeViewController alloc] init];
+//
+//    [tweetSheet addImage:[canvas_.painting imageForCurrentState]];
+//    [tweetSheet setInitialText:NSLocalizedString(@"Check out my Brushes #painting! @brushesapp",
+//                                                 @"Check out my Brushes #painting! @brushesapp")];
+//
+//    [self presentViewController:tweetSheet animated:YES completion:nil];
 }
 
 - (void) validateMenuItem:(WDMenuItem *)item
@@ -695,12 +697,12 @@
     }
 }
 
-- (UIPopoverController *) runPopoverWithController:(UIViewController *)controller from:(id)sender
+- (UIPopoverPresentationController *) runPopoverWithController:(UIViewController *)controller from:(id)sender
 {
     [self hidePopovers];
     
-    popoverController_ = [[UIPopoverController alloc] initWithContentViewController:controller];
-	popoverController_.delegate = self;
+    popoverController_ = [[UIPopoverPresentationController alloc] initWithPresentedViewController:self presentingViewController:controller];;
+	popoverController_.delegate = (id<UIPopoverPresentationControllerDelegate>)self;
     
     NSMutableArray *passthroughs = [NSMutableArray arrayWithObjects:self.topBar, self.bottomBar, nil];
     if (self.isEditing) {
@@ -709,14 +711,16 @@
     popoverController_.passthroughViews = passthroughs;
     
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        [popoverController_ presentPopoverFromBarButtonItem:sender
-                                   permittedArrowDirections:UIPopoverArrowDirectionAny
-                                                   animated:YES];
+//        [popoverController_ presentPopoverFromBarButtonItem:sender
+//                                   permittedArrowDirections:UIPopoverArrowDirectionAny
+//                                                   animated:YES];
+        [self presentViewController:popoverController_.presentingViewController animated:YES completion:nil];
     } else {
-        [popoverController_ presentPopoverFromRect:CGRectInset(((UIView *) sender).bounds, 10, 10)
-                                            inView:sender
-                          permittedArrowDirections:(UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown)
-                                          animated:YES];
+//        [popoverController_ presentPopoverFromRect:CGRectInset(((UIView *) sender).bounds, 10, 10)
+//                                            inView:sender
+//                          permittedArrowDirections:(UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown)
+//                                          animated:YES];
+        [self presentViewController:popoverController_.presentingViewController animated:YES completion:nil];
     }
     
     return popoverController_;
@@ -730,14 +734,15 @@
 - (void) hidePopovers
 {
     if (popoverController_) {
-        [popoverController_ dismissPopoverAnimated:NO];
+//        [popoverController_ dismissPopoverAnimated:NO];
+        [popoverController_.presentingViewController dismissViewControllerAnimated:YES completion:nil];
         popoverController_ = nil;
         
         visibleMenu_ = nil;
     }
 }
 
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+- (void)popoverControllerDidDismissPopover:(UIPopoverPresentationController *)popoverController
 {
     if (popoverController == popoverController_) {
         popoverController_ = nil;
@@ -812,7 +817,7 @@
 - (BOOL) phoneLandscapeMode
 {
     if ([self runningOnPhone]) {
-        return UIInterfaceOrientationIsLandscape(self.interfaceOrientation);
+        return UIInterfaceOrientationIsLandscape(UIDevice.currentDevice.orientation);
     }
     
     return NO;
@@ -871,10 +876,9 @@
         
         NSString *label = [NSString stringWithFormat:@"%lu", (unsigned long)index];
         
-        [label drawInRect:CGRectOffset(layerBox, 0, 1)
-                 withFont:[UIFont boldSystemFontOfSize:13]
-            lineBreakMode:UILineBreakModeClip
-                alignment:UITextAlignmentCenter];
+        [label drawInRect:CGRectOffset(layerBox, 0, 1) withAttributes:@{
+            NSFontAttributeName: [UIFont boldSystemFontOfSize:13]
+        }];
     }
 
     UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
@@ -1376,12 +1380,14 @@
     NSString *title = NSLocalizedString(@"Replay Error", @"Replay Error");
     NSString *message = NSLocalizedString(@"There was a problem replaying this painting. It may have been created with a newer version of Brushes. Check the App Store for an update.", @"There was a problem replaying this painting. It may have been created with a newer version of Brushes. Check the App Store for an update.");
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                                                    message:message
-                                                   delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                          otherButtonTitles:nil];
-    [alert show];
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:title
+                                                                        message:message
+                                                                 preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [controller addAction:okAction];
+    [self presentViewController:controller animated:YES completion:^{
+    }];
     
     [self.replay pause];
     [self showInterface];
@@ -1429,7 +1435,7 @@
     }
         
     [self undoStatusDidChange:nil];
-    [self configureForOrientation:self.interfaceOrientation];
+    [self configureForOrientation:UIDevice.currentDevice.orientation];
     [self enableItems];
 }
 

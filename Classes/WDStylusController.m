@@ -69,7 +69,7 @@
     
     CGSize contentSize = self.view.frame.size;
     contentSize.height = 60 * [[WDStylusManager sharedStylusManager] numberOfStylusTypes] - 1;
-    self.contentSizeForViewInPopover = contentSize;
+    self.preferredContentSize = contentSize;
     
     self.stylusTable.delegate = self;
     self.stylusTable.dataSource = self;
@@ -77,7 +77,7 @@
     
     if (WDDeviceIsPhone()) {
         UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Done")
-                                                                     style:UIBarButtonItemStyleBordered
+                                                                     style:UIBarButtonItemStylePlain
                                                                     target:self
                                                                     action:@selector(done:)];
         self.navigationItem.rightBarButtonItem = doneItem;

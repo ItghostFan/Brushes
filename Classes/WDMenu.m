@@ -41,7 +41,8 @@
     
     for (WDMenuItem *item in items) {
         int imageWidth = [item imageWidth] ? [item imageWidth] + kImageBuffer : 0;
-        maxWidth = MAX(maxWidth, [item.title sizeWithFont:[UIFont boldSystemFontOfSize:kFontSize]].width + imageWidth);
+        CGRect titleFrame = [item.title boundingRectWithSize:CGSizeZero options:NSStringDrawingUsesLineFragmentOrigin attributes:nil context:nil];
+        maxWidth = MAX(maxWidth, CGRectGetWidth(titleFrame) + imageWidth);
         height += (item.separator ? kSeparatorHeight : kMenuHeight);
     }
     
@@ -145,9 +146,10 @@
 {
     [self setIndexOfSelectedItem:(-1)];
 
-    [popover_ dismissPopoverAnimated:YES];
+//    [popover_ dismissPopoverAnimated:YES];
+    [popover_.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     
-    [delegate_ popoverControllerDidDismissPopover:popover_];
+    [delegate_ popoverPresentationControllerDidDismissPopover:popover_];
 }
 
 @end

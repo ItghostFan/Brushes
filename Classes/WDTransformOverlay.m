@@ -263,11 +263,11 @@
 - (NSArray *) toolbarItems
 {
     UIBarButtonItem *flipHorizontally = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Flip Horizontally", @"Flip Horizontally")
-                                                               style:UIBarButtonItemStyleBordered
+                                                                         style:UIBarButtonItemStylePlain
                                                               target:self action:@selector(flipHorizontally:)];
                                
     UIBarButtonItem *flipVertically = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Flip Vertically", @"Flip Vertically")
-                                                               style:UIBarButtonItemStyleBordered
+                                                                       style:UIBarButtonItemStylePlain
                                                               target:self action:@selector(flipVertically:)];
     
     UIBarButtonItem *flexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -313,11 +313,11 @@
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle:self.title];
     
     UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                               style:UIBarButtonItemStyleBordered
+                                                               style:UIBarButtonItemStylePlain
                                                               target:self action:@selector(cancel:)];
     
     UIBarButtonItem *accept = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Accept", @"Accept")
-                                                               style:UIBarButtonItemStyleBordered
+                                                               style:UIBarButtonItemStylePlain
                                                               target:self action:@selector(accept:)];
     
     navItem.leftBarButtonItem = cancel;

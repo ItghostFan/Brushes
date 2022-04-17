@@ -170,7 +170,7 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    self.contentSizeForViewInPopover = self.view.frame.size;
+    self.preferredContentSize = self.view.frame.size;
     
     // set up color comparator
     self.colorComparator.target = self;
@@ -194,7 +194,7 @@
     
     if (WDDeviceIsPhone()) {
         self.bottomBar.items = [self bottomBarItems];
-        [self.bottomBar setOrientation:self.interfaceOrientation];
+        [self.bottomBar setOrientation:UIDevice.currentDevice.orientation];
         
         CGRect matrixFrame = WDDeviceIs4InchPhone() ? self.view.frame : CGRectInset(self.view.frame, 10, 10);
         matrix = [[WDMatrix alloc] initWithFrame:matrixFrame];
@@ -216,7 +216,7 @@
 {
     self.navigationController.navigationBarHidden = YES;
     
-    [self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0];
+//    [self willRotateToInterfaceOrientation:UIDevice.currentDevice.orientation duration:0];
 }
 
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -258,7 +258,7 @@
         return;
     }
     
-    [self.bottomBar setOrientation:self.interfaceOrientation];
+    [self.bottomBar setOrientation:UIDevice.currentDevice.orientation];
 }
 
 - (BOOL) prefersStatusBarHidden
