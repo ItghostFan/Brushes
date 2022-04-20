@@ -7,3 +7,5 @@ xcuserdata
 *.xcworkspace
 .DS_Store
 .idea
+Pods
+Podfile.lock
