@@ -1,5 +1,5 @@
 //
-//  AssistantSceneDelegate.swift
+//  OpenGLSceneDelegate.swift
 //  scrawl
 //
 //  Created by Itghost Fan on 2022/4/18.
@@ -7,7 +7,8 @@
 
 import UIKit
 
-class AssistantSceneDelegate: UIResponder, UIWindowSceneDelegate {
+@available(iOS 13.0, *)
+class OpenGLSceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 

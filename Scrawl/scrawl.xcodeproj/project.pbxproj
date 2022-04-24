@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		75CFA8395AFC523C94E618BF /* Pods_scrawlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4032F9BF3A820E33CC465EA3 /* Pods_scrawlTests.framework */; };
+		782B435928151F4200FE7970 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782B435828151F4200FE7970 /* MainController.swift */; };
+		783FC7E128119DB500CCB4D3 /* AppScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783FC7E028119DB500CCB4D3 /* AppScene.swift */; };
 		7869E5D8280C730600E18487 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7869E5D7280C730600E18487 /* AppDelegate.swift */; };
 		7869E5DA280C730600E18487 /* MainSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7869E5D9280C730600E18487 /* MainSceneDelegate.swift */; };
-		7869E5DC280C730600E18487 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7869E5DB280C730600E18487 /* MainController.swift */; };
+		7869E5DC280C730600E18487 /* StartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7869E5DB280C730600E18487 /* StartController.swift */; };
 		7869E5DF280C730600E18487 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7869E5DD280C730600E18487 /* Main.storyboard */; };
 		7869E5E2280C730600E18487 /* scrawl.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7869E5E0280C730600E18487 /* scrawl.xcdatamodeld */; };
 		7869E5E4280C730800E18487 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7869E5E3280C730800E18487 /* Assets.xcassets */; };
@@ -19,9 +21,9 @@
 		7869E5FC280C730800E18487 /* scrawlUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7869E5FB280C730800E18487 /* scrawlUITests.swift */; };
 		7869E5FE280C730800E18487 /* scrawlUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7869E5FD280C730800E18487 /* scrawlUITestsLaunchTests.swift */; };
 		787247F0280CFDC900287EC5 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787247EF280CFDC900287EC5 /* main.swift */; };
-		78BB5F19280D47640092C8E6 /* Assistant.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78BB5F18280D47640092C8E6 /* Assistant.storyboard */; };
-		78BB5F1B280D49EB0092C8E6 /* AssistantController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BB5F1A280D49EB0092C8E6 /* AssistantController.swift */; };
-		78BB5F1D280D4A540092C8E6 /* AssistantSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BB5F1C280D4A540092C8E6 /* AssistantSceneDelegate.swift */; };
+		78BB5F19280D47640092C8E6 /* OpenGL.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78BB5F18280D47640092C8E6 /* OpenGL.storyboard */; };
+		78BB5F1B280D49EB0092C8E6 /* OpenGLController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BB5F1A280D49EB0092C8E6 /* OpenGLController.swift */; };
+		78BB5F1D280D4A540092C8E6 /* OpenGLSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BB5F1C280D4A540092C8E6 /* OpenGLSceneDelegate.swift */; };
 		B85CF0312BC75EE73D2E4DCC /* Pods_scrawl_scrawlUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A877FA44FBC809623048A5F /* Pods_scrawl_scrawlUITests.framework */; };
 		C6AB62E79A2C221B15C2E119 /* Pods_scrawl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDCC601C3FA3D4C3852DA99 /* Pods_scrawl.framework */; };
 /* End PBXBuildFile section */
@@ -51,10 +53,12 @@
 		6E2FDCF670A56947ACF004BB /* Pods-scrawl-scrawlUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-scrawl-scrawlUITests.debug.xcconfig"; path = "Target Support Files/Pods-scrawl-scrawlUITests/Pods-scrawl-scrawlUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		76AE2F619BDCD798A43E8332 /* Pods-scrawlTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-scrawlTests.release.xcconfig"; path = "Target Support Files/Pods-scrawlTests/Pods-scrawlTests.release.xcconfig"; sourceTree = "<group>"; };
 		77D61BDAEC1E995CA9CE278B /* Pods-scrawl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-scrawl.release.xcconfig"; path = "Target Support Files/Pods-scrawl/Pods-scrawl.release.xcconfig"; sourceTree = "<group>"; };
+		782B435828151F4200FE7970 /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
+		783FC7E028119DB500CCB4D3 /* AppScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppScene.swift; sourceTree = "<group>"; };
 		7869E5D4280C730600E18487 /* scrawl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = scrawl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7869E5D7280C730600E18487 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7869E5D9280C730600E18487 /* MainSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSceneDelegate.swift; sourceTree = "<group>"; };
-		7869E5DB280C730600E18487 /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
+		7869E5DB280C730600E18487 /* StartController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartController.swift; sourceTree = "<group>"; };
 		7869E5DE280C730600E18487 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7869E5E1280C730600E18487 /* scrawl.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = scrawl.xcdatamodel; sourceTree = "<group>"; };
 		7869E5E3280C730800E18487 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -66,9 +70,9 @@
 		7869E5FB280C730800E18487 /* scrawlUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scrawlUITests.swift; sourceTree = "<group>"; };
 		7869E5FD280C730800E18487 /* scrawlUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scrawlUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		787247EF280CFDC900287EC5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		78BB5F18280D47640092C8E6 /* Assistant.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Assistant.storyboard; sourceTree = "<group>"; };
-		78BB5F1A280D49EB0092C8E6 /* AssistantController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantController.swift; sourceTree = "<group>"; };
-		78BB5F1C280D4A540092C8E6 /* AssistantSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantSceneDelegate.swift; sourceTree = "<group>"; };
+		78BB5F18280D47640092C8E6 /* OpenGL.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = OpenGL.storyboard; sourceTree = "<group>"; };
+		78BB5F1A280D49EB0092C8E6 /* OpenGLController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenGLController.swift; sourceTree = "<group>"; };
+		78BB5F1C280D4A540092C8E6 /* OpenGLSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenGLSceneDelegate.swift; sourceTree = "<group>"; };
 		8008D72AC31B2D78A8E0B050 /* Pods-scrawlTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-scrawlTests.debug.xcconfig"; path = "Target Support Files/Pods-scrawlTests/Pods-scrawlTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A640D64F9D71F71165D01906 /* Pods-scrawl-scrawlUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-scrawl-scrawlUITests.release.xcconfig"; path = "Target Support Files/Pods-scrawl-scrawlUITests/Pods-scrawl-scrawlUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -130,13 +134,15 @@
 				787247F1280CFF9E00287EC5 /* CoreData */,
 				7869E5D7280C730600E18487 /* AppDelegate.swift */,
 				7869E5D9280C730600E18487 /* MainSceneDelegate.swift */,
-				78BB5F1C280D4A540092C8E6 /* AssistantSceneDelegate.swift */,
-				7869E5DB280C730600E18487 /* MainController.swift */,
-				78BB5F1A280D49EB0092C8E6 /* AssistantController.swift */,
+				78BB5F1C280D4A540092C8E6 /* OpenGLSceneDelegate.swift */,
+				7869E5DB280C730600E18487 /* StartController.swift */,
+				782B435828151F4200FE7970 /* MainController.swift */,
+				78BB5F1A280D49EB0092C8E6 /* OpenGLController.swift */,
 				787247EF280CFDC900287EC5 /* main.swift */,
 				7869E5E3280C730800E18487 /* Assets.xcassets */,
 				7869E5E5280C730800E18487 /* LaunchScreen.storyboard */,
 				7869E5E8280C730800E18487 /* Info.plist */,
+				783FC7E028119DB500CCB4D3 /* AppScene.swift */,
 			);
 			path = scrawl;
 			sourceTree = "<group>";
@@ -170,7 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				7869E5DD280C730600E18487 /* Main.storyboard */,
-				78BB5F18280D47640092C8E6 /* Assistant.storyboard */,
+				78BB5F18280D47640092C8E6 /* OpenGL.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -308,7 +314,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7869E5E7280C730800E18487 /* LaunchScreen.storyboard in Resources */,
-				78BB5F19280D47640092C8E6 /* Assistant.storyboard in Resources */,
+				78BB5F19280D47640092C8E6 /* OpenGL.storyboard in Resources */,
 				7869E5E4280C730800E18487 /* Assets.xcassets in Resources */,
 				7869E5DF280C730600E18487 /* Main.storyboard in Resources */,
 			);
@@ -438,13 +444,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7869E5DC280C730600E18487 /* MainController.swift in Sources */,
+				783FC7E128119DB500CCB4D3 /* AppScene.swift in Sources */,
+				7869E5DC280C730600E18487 /* StartController.swift in Sources */,
 				787247F0280CFDC900287EC5 /* main.swift in Sources */,
 				7869E5D8280C730600E18487 /* AppDelegate.swift in Sources */,
 				7869E5DA280C730600E18487 /* MainSceneDelegate.swift in Sources */,
-				78BB5F1B280D49EB0092C8E6 /* AssistantController.swift in Sources */,
+				78BB5F1B280D49EB0092C8E6 /* OpenGLController.swift in Sources */,
 				7869E5E2280C730600E18487 /* scrawl.xcdatamodeld in Sources */,
-				78BB5F1D280D4A540092C8E6 /* AssistantSceneDelegate.swift in Sources */,
+				782B435928151F4200FE7970 /* MainController.swift in Sources */,
+				78BB5F1D280D4A540092C8E6 /* OpenGLSceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -623,6 +631,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4C39GTGS9D;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					GLES_SILENCE_DEPRECATION,
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = scrawl/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

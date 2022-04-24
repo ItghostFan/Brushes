@@ -20,11 +20,11 @@
 				</dict>
 				<dict>
 					<key>UISceneConfigurationName</key>
-					<string>Assistant Configuration</string>
+					<string>OpenGL Configuration</string>
 					<key>UISceneDelegateClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).AssistantSceneDelegate</string>
+					<string>$(PRODUCT_MODULE_NAME).OpenGLSceneDelegate</string>
 					<key>UISceneStoryboardFile</key>
-					<string>Assistant</string>
+					<string>OpenGL</string>
 				</dict>
 			</array>
 		</dict>
