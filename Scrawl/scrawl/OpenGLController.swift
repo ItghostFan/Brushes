@@ -1,5 +1,5 @@
 //
-//  OpenGLController.swift
+//  swift
 //  scrawl
 //
 //  Created by Itghost Fan on 2022/4/18.
@@ -17,9 +17,9 @@ enum DrawShape {
 
 class OpenGLController: UIViewController, GLKViewDelegate {
     
-    static private let triangleVertexSize = 3
-    static private let rectangleVertexSize = triangleVertexSize * 2
-    static private let rectangleVertexColumn = 5
+    private lazy var triangleVertexSize = 3
+    private lazy var rectangleVertexSize = triangleVertexSize * 2
+    private lazy var rectangleVertexColumn = 5
     
     private var glkView = GLKView()
     private var glkBaseEffect = GLKBaseEffect()
@@ -27,9 +27,9 @@ class OpenGLController: UIViewController, GLKViewDelegate {
     private var drawShape = DrawShape.Rectangle
     
     private var triangleVertexBuffer = UnsafeMutablePointer<GLuint>.allocate(capacity: 1)
-    private var triangleVertices = UnsafeMutablePointer<GLKVector3>.allocate(capacity: triangleVertexSize)
+    private lazy var triangleVertices = UnsafeMutablePointer<GLKVector3>.allocate(capacity: triangleVertexSize)
     
-    private var rectangleVertexBuffer = UnsafeMutablePointer<GLuint>.allocate(capacity: 1)
+    private var rectangleVertexBuffer = GLuint()
 //    private var rectangleVertices = UnsafeMutablePointer<GLfloat>.allocate(capacity: rectangleVertexSize * rectangleVertexColumn)
     private var rectangleVertices =
     [
@@ -46,6 +46,14 @@ class OpenGLController: UIViewController, GLKViewDelegate {
         // bottom left
         0.0, 0.0, 0.0,      0.0, 0.0,
     ]
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,30 +98,31 @@ class OpenGLController: UIViewController, GLKViewDelegate {
         glGenBuffers(GLsizei(1), triangleVertexBuffer)
         print("Triangle Buffer \(triangleVertexBuffer[0])")
         glBindBuffer(GLenum(GL_ARRAY_BUFFER), triangleVertexBuffer[0])
-        glBufferData(GLenum(GL_ARRAY_BUFFER), MemoryLayout<GLKVector3>.size * OpenGLController.triangleVertexSize,         triangleVertices, GLenum(GL_STATIC_DRAW))
+        glBufferData(GLenum(GL_ARRAY_BUFFER), MemoryLayout<GLKVector3>.size * triangleVertexSize,         triangleVertices, GLenum(GL_STATIC_DRAW))
     }
     
     func makeRectangle() {
         
-        glGenBuffers(GLsizei(1), rectangleVertexBuffer)
-        print("Rectangle Buffer \(rectangleVertexBuffer[0])")
-        glBindBuffer(GLenum(GL_ARRAY_BUFFER), rectangleVertexBuffer[0])
-        let vertexSize = MemoryLayout<GLfloat>.size * OpenGLController.rectangleVertexColumn * OpenGLController.rectangleVertexSize
+        glGenBuffers(GLsizei(1), &rectangleVertexBuffer)
+        print("Rectangle Buffer \(rectangleVertexBuffer)")
+        glBindBuffer(GLenum(GL_ARRAY_BUFFER), rectangleVertexBuffer)
+        let vertexSize = MemoryLayout<GLfloat>.size * rectangleVertexColumn * rectangleVertexSize
         glBufferData(GLenum(GL_ARRAY_BUFFER), vertexSize, rectangleVertices, GLenum(GL_STATIC_DRAW))
         
         let image = UIImage(named: "scrawl")?.cgImage
         do {
-            let textureInfo = try? GLKTextureLoader.texture(with: image!, options: [GLKTextureLoaderOriginBottomLeft:true,GLKTextureLoaderGrayscaleAsAlpha:true,GLKTextureLoaderApplyPremultiplication:true])
-            glkBaseEffect.texture2d0.name = textureInfo!.name
-            glkBaseEffect.texture2d0.target = GLKTextureTarget(rawValue: textureInfo!.target)!
+            let textureInfo = try GLKTextureLoader.texture(with: image!, options: [GLKTextureLoaderOriginBottomLeft: true, GLKTextureLoaderGrayscaleAsAlpha: true, GLKTextureLoaderApplyPremultiplication: true])
+            glkBaseEffect.texture2d0.name = textureInfo.name
+            glkBaseEffect.texture2d0.enabled = GLboolean(GL_TRUE)
+//            glkBaseEffect.texture2d0.target = GLKTextureTarget(rawValue: textureInfo!.target)!
         } catch {
             print("\(error)")
         }
         
         glEnableVertexAttribArray(GLuint(GLKVertexAttrib.position.rawValue))
-        glVertexAttribPointer(GLuint(GLKVertexAttrib.position.rawValue), GLint(3), GLenum(GL_FLOAT), GLboolean(GL_FALSE), GLsizei(MemoryLayout<GLfloat>.size * OpenGLController.rectangleVertexColumn), UnsafeRawPointer(bitPattern: 0))
+        glVertexAttribPointer(GLuint(GLKVertexAttrib.position.rawValue), GLint(3), GLenum(GL_FLOAT), GLboolean(GL_FALSE), GLsizei(MemoryLayout<GLfloat>.size * rectangleVertexColumn), UnsafeRawPointer(bitPattern: 0))
         glEnableVertexAttribArray(GLuint(GLKVertexAttrib.texCoord0.rawValue))
-        glVertexAttribPointer(GLuint(GLKVertexAttrib.texCoord0.rawValue), GLint(2), GLenum(GL_FLOAT), GLboolean(GL_FALSE), GLsizei(MemoryLayout<GLfloat>.size * OpenGLController.rectangleVertexColumn), UnsafeRawPointer(bitPattern: MemoryLayout<GLfloat>.size * 3));
+        glVertexAttribPointer(GLuint(GLKVertexAttrib.texCoord0.rawValue), GLint(2), GLenum(GL_FLOAT), GLboolean(GL_FALSE), GLsizei(MemoryLayout<GLfloat>.size * rectangleVertexColumn), UnsafeRawPointer(bitPattern: MemoryLayout<GLfloat>.size * 3));
     }
     
     deinit {
@@ -131,10 +140,9 @@ class OpenGLController: UIViewController, GLKViewDelegate {
     }
     
     func clearRectangle() {
-        if rectangleVertexBuffer[0] != 0 {
-            glDeleteBuffers(GLsizei(1), rectangleVertexBuffer)
+        if rectangleVertexBuffer != GLuint(0) {
+            glDeleteBuffers(GLsizei(1), &rectangleVertexBuffer)
         }
-        rectangleVertexBuffer.deallocate()
     }
     
     func drawTraingle() {
@@ -146,7 +154,7 @@ class OpenGLController: UIViewController, GLKViewDelegate {
             GLsizei(MemoryLayout<GLKVector3>.size),
             UnsafeRawPointer(nil)
         )
-        let vertexSize = GLsizei(OpenGLController.triangleVertexSize)
+        let vertexSize = GLsizei(triangleVertexSize)
         glDrawArrays(GLenum(GL_TRIANGLES), GLint(0), vertexSize)
     }
     
@@ -156,10 +164,10 @@ class OpenGLController: UIViewController, GLKViewDelegate {
             GLint(3),
             GLenum(GL_FLOAT),
             GLboolean(GL_FALSE),
-            GLsizei(MemoryLayout<GLfloat>.size * OpenGLController.rectangleVertexColumn),
+            GLsizei(MemoryLayout<GLfloat>.size * rectangleVertexColumn),
             nil
         )
-        let vertexSize = GLsizei(OpenGLController.rectangleVertexSize)
+        let vertexSize = GLsizei(rectangleVertexSize)
         glDrawArrays(GLenum(GL_TRIANGLES), GLint(0), vertexSize)
     }
     
